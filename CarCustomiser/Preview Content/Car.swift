@@ -13,4 +13,9 @@ struct Car {
     var topSpeed : Int
     var acceleration: Double
     var handling: Int
+    
+    
+    func displayStats() -> String {
+        return ("Car Make: \(make)\nModel:\(model)\nTop Speed:\(topSpeed)\nAcceleration(0-60mph)\(acceleration)s\nhandling:\(handling)")
+    }
 }
