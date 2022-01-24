@@ -42,6 +42,33 @@ struct FirstView: View {
     @State private var SlipstreamedBodyPackage = false
     @State private var SupersonicWindscreeenWipersPackage = false
     @State private var remainingFunds = 1000
+    @State private var remainingTime = 30
+    
+    var timerDone: Bool{
+            if self.remainingTime == 0{
+                return false
+            }else{
+                return true
+            }
+        }
+    
+    var exhaustPackageEnabled: Bool{
+            return timerDone ? (exhaustPackage ? true : remainingFunds >= 100 ? true : false) : false
+    }
+    var tiresPackageEnabled: Bool{
+            return timerDone ? (tiresPackage ? true : remainingFunds >= 100 ? true : false) : false
+        }
+    var BrakesPackageEnabled: Bool{
+            return timerDone ? (BrakesPackage ? true : remainingFunds >= 100 ? true : false) : false
+        }
+    var SlipstreamedBodyPackageEnabled: Bool{
+            return timerDone ? (SlipstreamedBodyPackage ? true : remainingFunds >= 300 ? true : false) : false
+        }
+    var SupersonicWndscreenWipersPackageEnabled: Bool{
+            return timerDone ? (SupersonicWindscreeenWipersPackage ? true : remainingFunds >= 1000 ? true : false) : false
+        }
+    
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         //exhaust
@@ -114,13 +141,20 @@ struct FirstView: View {
                 }
             }
         )
-        
+
         Form{
-            VStack {
+            VStack (alignment: .leading) {
+                Text("\(remainingTime)")
+                    .foregroundColor(.red)
+                    .onReceive(timer, perform: { _ in
+                        if self.remainingTime > 0{
+                            self.remainingTime -= 1
+                        }
+                    })
                 Text("\(starterCars.cars[selectedCar].displayStats())")
                     .font(.callout)
                     .padding()
-                    .frame(width: 300)
+                    .frame(width: 350)
                 HStack{
                     Button("Next car", action: {
                         if selectedCar < self.starterCars.cars.count - 1{
@@ -129,14 +163,20 @@ struct FirstView: View {
                             selectedCar = 0}
                     })
                         .padding()
+                        .disabled(!timerDone)
                 }
             }
             Section {
                 Toggle("Exhaust Package (cost 100)", isOn: exhaustPackageBinding)
+                    .disabled(!exhaustPackage)
                 Toggle("Tires Package (cost 100)", isOn: tiresPackageBinding)
+                    .disabled(!tiresPackage)
                 Toggle("Brakes Package (cost 100)", isOn: BrakesPackageBinding)
+                    .disabled(!BrakesPackage)
                 Toggle("Slipstreamed Body Package (cost 300)", isOn: SlipstreamedBodyPackageBinding)
+                    .disabled(!SlipstreamedBodyPackage)
                 Toggle("Supersonic Windscreeen Wipers Package (cost 1000)", isOn: SupersonicWindscreeenWipersPackageBinding)
+                    .disabled(!SupersonicWindscreeenWipersPackage)
             }
         }
         Spacer()
@@ -146,6 +186,7 @@ struct FirstView: View {
         
     }
 }
+
 
 
 struct ContentView_Previews: PreviewProvider {
