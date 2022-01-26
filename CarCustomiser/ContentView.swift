@@ -168,15 +168,15 @@ struct FirstView: View {
             }
             Section {
                 Toggle("Exhaust Package (cost 100)", isOn: exhaustPackageBinding)
-                    .disabled(!exhaustPackage)
+                    .disabled(!exhaustPackageEnabled)
                 Toggle("Tires Package (cost 100)", isOn: tiresPackageBinding)
-                    .disabled(!tiresPackage)
+                    .disabled(!tiresPackageEnabled)
                 Toggle("Brakes Package (cost 100)", isOn: BrakesPackageBinding)
-                    .disabled(!BrakesPackage)
+                    .disabled(!BrakesPackageEnabled)
                 Toggle("Slipstreamed Body Package (cost 300)", isOn: SlipstreamedBodyPackageBinding)
-                    .disabled(!SlipstreamedBodyPackage)
+                    .disabled(!SlipstreamedBodyPackageEnabled)
                 Toggle("Supersonic Windscreeen Wipers Package (cost 1000)", isOn: SupersonicWindscreeenWipersPackageBinding)
-                    .disabled(!SupersonicWindscreeenWipersPackage)
+                    .disabled(!SupersonicWndscreenWipersPackageEnabled)
             }
         }
         Spacer()
